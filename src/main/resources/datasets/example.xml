@@ -1,0 +1,27 @@
+<data>
+    <!--data contains all instances-->
+    <!--name of single data set-->
+    <name>name</name>
+    <!--representation of single instance-->
+    <entry>
+        <!--attribute with name Class is class attribute-->
+        <atrribute>
+            <!--name of class attribute-->
+            <name>Class</name>
+            <!--value of class attribute-->
+            <value>value</value>
+        </atrribute>
+        <!--representation of non-class attribute-->
+        <attribute>
+            <!--name of non-class attribute-->
+            <name>attr1</name>
+            <!--value of non-class attribute-->
+            <value>val1</value>
+        </attribute>
+        <attribute>
+            <name>attr2</name>
+            <value>val2</value>
+        </attribute>
+        <!--etc...-->
+    </entry>
+</data>
