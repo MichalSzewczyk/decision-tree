@@ -9,7 +9,6 @@ public class Main {
                         "xml-data-generator\\src\\main\\resources\\classifications",
                         "xml-data-generator\\src\\main\\resources\\data");
         xmlDataGenerator
-                .generateFile("Tic-Tac-Toe Endgame database",
-                        "xml-data-generator\\src\\main\\resources\\result");
+                .generateFile("src\\main\\resources\\datasets\\tic-tac-toe-data.xml");
     }
 }

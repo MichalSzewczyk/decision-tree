@@ -18,16 +18,13 @@ public class XmlDataGenerator {
         this.dataFilePath = dataFilePath;
     }
 
-    void generateFile(String info, String resultFilePath) throws IOException {
+    void generateFile(String resultFilePath) throws IOException {
         List<String> classesList = getListOfLines(classificationsFilePath);
         List<String> dataList = getListOfLines(dataFilePath);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
                 .append("<data>\n" +
-                        "    <name>Tic-Tac-Toe Endgame</name>\n" +
-                        "    <information>\n" +
-                        "        ")
-                .append(info).append("\n    </information>\n");
+                        "    <name>Tic-Tac-Toe Endgame</name>\n");
         dataList.stream().map(str -> List.of(str.split(","))).forEach(list -> {
             stringBuilder.append("    <entry>\n");
             for (int i = 0; i < list.size(); i++) {
