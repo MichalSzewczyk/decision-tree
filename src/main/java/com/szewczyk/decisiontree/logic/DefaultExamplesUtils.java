@@ -85,9 +85,6 @@ public class DefaultExamplesUtils {
             for (Map.Entry<String, String> attribute : attributes.entrySet())
                 if (!(e.getDecisionFor(attribute.getKey()).equals(attribute.getValue())))
                     continue nextExample;
-
-            // All of the provided attributes match the example.
-            // If the example matches the classifier, then include it in the count.
             if (e.getClassifier() == classifier)
                 count++;
         }
