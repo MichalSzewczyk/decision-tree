@@ -3,47 +3,43 @@ package com.szewczyk.decisiontree.data.xml.impl;
 import com.szewczyk.decisiontree.data.model.raw.Attributes;
 import com.szewczyk.decisiontree.data.model.raw.Data;
 import com.szewczyk.decisiontree.data.xml.DataConverter;
+import com.szewczyk.decisiontree.data.xml.utils.ConverterUtils;
 import com.szewczyk.decisiontree.model.Example;
 import com.szewczyk.decisiontree.model.Examples;
 import com.szewczyk.decisiontree.model.ExamplesData;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DefaultDataConverter implements DataConverter {
     private final static int TEST_EXAMPLES_PROPORTION = 1;
 
+    private final ConverterUtils converterUtils;
+
+    public DefaultDataConverter(ConverterUtils converterUtils) {
+        this.converterUtils = converterUtils;
+    }
+
     @Override
     public ExamplesData convertData(int trainingExamplesProportion, int validationExamplesProportion, Data data) {
         Attributes attributes = data.getAttributes();
         Set<String> convertedAttributes = new HashSet<>(Arrays.asList(attributes.getAttribute()));
-
-        List<Example> convertedExamples =
-                Stream.of(data.getExamples().getExample()).map(example ->
-                        getExampleFrom(data.getAttributes().getAttribute(), example.getValue(), example.getClassifier())).collect(Collectors.toList());
+        List<Example> convertedExamples = extractExamplesFromData(data);
         Examples examples = new Examples(convertedAttributes, convertedExamples);
-        int parts = convertedExamples.size() / (trainingExamplesProportion + validationExamplesProportion + TEST_EXAMPLES_PROPORTION);
-        int numberOfTestExamples = TEST_EXAMPLES_PROPORTION * parts;
-        int numberOfTrainingExamples = parts * trainingExamplesProportion;
-        int numberOfValidationExamples = examples.getExamples().size() - numberOfTestExamples - numberOfTrainingExamples;
-        System.out.println("Running with following input sets sizes:");
-        System.out.println("All examples: " + examples.getExamples().size());
-        System.out.println("Test examples: " + numberOfTestExamples);
-        System.out.println("Training examples: " + numberOfTrainingExamples);
-        System.out.println("Validation examples: " + numberOfValidationExamples);
+
         List<Example> trainingExamplesList = new LinkedList<>();
         List<Example> validationExamplesList = new LinkedList<>();
         List<Example> testExamplesList = new LinkedList<>();
-        for (int i = 0; i < examples.getExamples().size(); i++) {
-            if (i < numberOfTrainingExamples) {
-                trainingExamplesList.add(examples.getExamples().get(i));
-            } else if (i < numberOfTrainingExamples + numberOfValidationExamples) {
-                validationExamplesList.add(examples.getExamples().get(i));
-            } else {
-                testExamplesList.add(examples.getExamples().get(i));
-            }
-        }
+
+        converterUtils.splitDataOntoThreeSetsWithProportions(
+                convertedExamples,
+                trainingExamplesList, trainingExamplesProportion,
+                validationExamplesList, validationExamplesProportion,
+                testExamplesList, TEST_EXAMPLES_PROPORTION);
+
+        logAlgorithmInput(System.out::println, examples, testExamplesList.size(), trainingExamplesList.size(), validationExamplesList.size());
         Examples trainingExamples = new Examples(convertedAttributes, trainingExamplesList);
         Examples validationExamples = new Examples(convertedAttributes, validationExamplesList);
         Examples testExamples = new Examples(convertedAttributes, testExamplesList);
@@ -59,5 +55,18 @@ public class DefaultDataConverter implements DataConverter {
             attributesToValues.put(attributes[i], values[i]);
         }
         return new Example(attributesToValues, Boolean.valueOf(classifier));
+    }
+
+    private List<Example> extractExamplesFromData(Data data) {
+        return Stream.of(data.getExamples().getExample()).map(example ->
+                getExampleFrom(data.getAttributes().getAttribute(), example.getValue(), example.getClassifier())).collect(Collectors.toList());
+    }
+
+    void logAlgorithmInput(Consumer<String> logger, Examples examples, int numberOfTestExamples, int numberOfTrainingExamples, int numberOfValidationExamples) {
+        logger.accept("Running with following input sets sizes:");
+        logger.accept("All examples: " + examples.getExamples().size());
+        logger.accept("Test examples: " + numberOfTestExamples);
+        logger.accept("Training examples: " + numberOfTrainingExamples);
+        logger.accept("Validation examples: " + numberOfValidationExamples);
     }
 }
