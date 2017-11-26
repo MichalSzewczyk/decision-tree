@@ -1,8 +1,8 @@
-package data.model.raw;
+package com.szewczyk.decisiontree.data.model.raw;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "data")
+@XmlRootElement(name = "com/szewczyk/decisiontree/data")
 public class Data {
     private Attributes attributes;
 

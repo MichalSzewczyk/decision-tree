@@ -1,4 +1,4 @@
-package data.model.raw;
+package com.szewczyk.decisiontree.data.model.raw;
 
 public class Example {
     private String[] value;
