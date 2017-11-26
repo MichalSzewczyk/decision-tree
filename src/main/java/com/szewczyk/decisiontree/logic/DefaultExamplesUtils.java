@@ -1,7 +1,7 @@
-package logic;
+package com.szewczyk.decisiontree.logic;
 
-import model.Example;
-import model.Examples;
+import com.szewczyk.decisiontree.model.Example;
+import com.szewczyk.decisiontree.model.Examples;
 
 import java.util.HashMap;
 import java.util.HashSet;

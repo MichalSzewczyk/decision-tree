@@ -1,8 +1,8 @@
-package logic; /**
+package com.szewczyk.decisiontree.logic; /**
  *
  */
 
-import model.Examples;
+import com.szewczyk.decisiontree.model.Examples;
 
 import java.util.*;
 

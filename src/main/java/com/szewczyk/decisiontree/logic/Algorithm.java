@@ -1,7 +1,4 @@
-package logic; /**
- *  
- */
-
+package com.szewczyk.decisiontree.logic;
 import java.util.Map;
 import java.util.Set;
 

@@ -1,8 +1,8 @@
-package logic; /**
+package com.szewczyk.decisiontree.logic; /**
  *
  */
 
-import utils.BadDecisionException;
+import com.szewczyk.decisiontree.utils.BadDecisionException;
 
 import java.util.HashMap;
 import java.util.Map;
