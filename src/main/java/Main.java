@@ -17,6 +17,7 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
         DataProvider dataProvider = new DefaultDataProvider(new XmlDataSupplier(new JAXBXmlDeserializer()), new DefaultDataConverter());
+        dataProvider.setExamplesProportion(5,5);
         ExamplesData examplesData = dataProvider.loadExamplesFromXmlFile(Paths.get("test.xml"));
         Set<String> attributes = examplesData.getAttributes();
         Examples trainingExamples = examplesData.getTrainingExamples();
@@ -31,7 +32,9 @@ public class Main {
         Attribute rootAttribute = tree.buildAndReturnRootAttribute();
 
         double accuracy = rootAttribute.verifyFor(examplesData.getValidationExamples());
+        System.out.println("Tree: "+rootAttribute);
 
+        rootAttribute.prune(-1, tree.getAttributes(), rootAttribute, examplesData.getValidationExamples());
         System.out.println("Accuracy: " + accuracy);
     }
 }

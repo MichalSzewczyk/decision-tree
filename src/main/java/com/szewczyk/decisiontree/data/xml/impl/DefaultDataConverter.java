@@ -47,9 +47,6 @@ public class DefaultDataConverter implements DataConverter {
         Examples trainingExamples = new Examples(convertedAttributes, trainingExamplesList);
         Examples validationExamples = new Examples(convertedAttributes, validationExamplesList);
         Examples testExamples = new Examples(convertedAttributes, testExamplesList);
-        System.out.println("training: " + trainingExamples.getExamples());
-        System.out.println("validation: " + trainingExamples.getExamples());
-        System.out.println("test: " + trainingExamples.getExamples());
         return new ExamplesData(trainingExamples, validationExamples, testExamples, convertedAttributes);
     }
 

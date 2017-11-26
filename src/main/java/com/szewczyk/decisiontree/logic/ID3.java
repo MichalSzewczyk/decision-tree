@@ -18,8 +18,6 @@ public class ID3 implements Algorithm {
     }
 
     public Attribute nextAttribute(Map<String, String> chosenAttributes, Set<String> usedAttributes) {
-        System.out.println("next attribtue: "+chosenAttributes+" "+usedAttributes);
-
         double currentGain = 0.0, bestGain = 0.0;
         String bestAttribute = "";
         int positive = examplesUtils.countPositive(chosenAttributes);
@@ -80,11 +78,8 @@ public class ID3 implements Algorithm {
 
     private double informationGain(String attribute, Map<String, String> specifiedAttributes) {
         double sum = entropy(specifiedAttributes);
-        System.out.println("sum: "+ sum);
 
         double examplesCount = examplesUtils.count(specifiedAttributes);
-        System.out.println("examplesCount: "+ examplesCount);
-
 
         if (examplesCount == 0)
             return sum;

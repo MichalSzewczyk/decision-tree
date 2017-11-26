@@ -6,11 +6,12 @@ import com.szewczyk.decisiontree.model.Examples;
 
 import java.util.*;
 
-public class DecisionTree implements Tree{
+public class DecisionTree implements Tree {
     private Examples examples;
     private Map<String, Set<String>> decisions;
     private boolean decisionsSpecified;
     private Attribute rootAttribute;
+    private final Set<Attribute> attributes;
     private DefaultExamplesUtils examplesUtils;
 
     private Algorithm algorithm;
@@ -19,8 +20,9 @@ public class DecisionTree implements Tree{
         this.algorithm = algorithm;
         this.examplesUtils = examplesUtils;
         this.examples = examples;
-        decisions = new HashMap<>();
-        decisionsSpecified = false;
+        this.decisions = new HashMap<>();
+        this.decisionsSpecified = false;
+        this.attributes = new HashSet<>();
     }
 
     private Attribute compileWalk(Attribute current, Map<String, String> chosenAttributes, Set<String> usedAttributes) {
@@ -31,6 +33,7 @@ public class DecisionTree implements Tree{
 
         usedAttributes.add(attributeName);
 
+        attributes.add(current);
         for (String decisionName : decisions.get(attributeName)) {
             chosenAttributes.put(attributeName, decisionName);
 
@@ -44,11 +47,11 @@ public class DecisionTree implements Tree{
 
     public void compile() {
 
-        Map<String, String> chosenAttributes = new HashMap<String, String>();
-        Set<String> usedAttributes = new HashSet<String>();
+        Map<String, String> chosenAttributes = new HashMap<>();
+        Set<String> usedAttributes = new HashSet<>();
         if (!decisionsSpecified)
             decisions = examplesUtils.extractDecisions();
-        System.out.println("creating tree for: "+chosenAttributes+" "+usedAttributes);
+        System.out.println("creating tree for: " + chosenAttributes + " " + usedAttributes);
 
         rootAttribute = compileWalk(algorithm.nextAttribute(chosenAttributes, usedAttributes), chosenAttributes, usedAttributes);
     }
@@ -70,5 +73,10 @@ public class DecisionTree implements Tree{
     public Attribute buildAndReturnRootAttribute() {
         compile();
         return getRoot();
+    }
+
+    @Override
+    public Set<Attribute> getAttributes() {
+        return attributes;
     }
 }

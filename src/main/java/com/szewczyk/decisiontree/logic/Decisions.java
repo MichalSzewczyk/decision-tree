@@ -1,6 +1,4 @@
-package com.szewczyk.decisiontree.logic; /**
- *
- */
+package com.szewczyk.decisiontree.logic;
 
 import com.szewczyk.decisiontree.utils.BadDecisionException;
 
@@ -12,7 +10,7 @@ class  Decisions {
   private Map<String, Attribute> decisions;
 
   public Decisions() {
-    decisions = new HashMap<String, Attribute>();
+    decisions = new HashMap<>();
   }
 
   public Map<String, Attribute> getMap() {
