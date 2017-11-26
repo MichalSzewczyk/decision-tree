@@ -1,15 +1,15 @@
-import data.DataProvider;
-import data.DefaultDataProvider;
-import data.xml.impl.DefaultDataConverter;
-import data.xml.impl.JAXBXmlDeserializer;
-import data.xml.impl.XmlDataSupplier;
-import utils.BadDecisionException;
-import logic.DefaultExamplesUtils;
-import logic.ID3;
-import logic.Tree;
-import model.Examples;
-import model.ExamplesData;
-import utils.DecisionTreeBuilder;
+import com.szewczyk.decisiontree.data.DataProvider;
+import com.szewczyk.decisiontree.data.DefaultDataProvider;
+import com.szewczyk.decisiontree.data.xml.impl.DefaultDataConverter;
+import com.szewczyk.decisiontree.data.xml.impl.JAXBXmlDeserializer;
+import com.szewczyk.decisiontree.data.xml.impl.XmlDataSupplier;
+import com.szewczyk.decisiontree.utils.BadDecisionException;
+import com.szewczyk.decisiontree.logic.DefaultExamplesUtils;
+import com.szewczyk.decisiontree.logic.ID3;
+import com.szewczyk.decisiontree.logic.Tree;
+import com.szewczyk.decisiontree.model.Examples;
+import com.szewczyk.decisiontree.model.ExamplesData;
+import com.szewczyk.decisiontree.utils.DecisionTreeBuilder;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
