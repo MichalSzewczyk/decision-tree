@@ -1,8 +1,8 @@
-package data;
+package com.szewczyk.decisiontree.data;
 
-import data.xml.DataConverter;
-import data.xml.DataSupplier;
-import model.ExamplesData;
+import com.szewczyk.decisiontree.data.xml.DataConverter;
+import com.szewczyk.decisiontree.data.xml.DataSupplier;
+import com.szewczyk.decisiontree.model.ExamplesData;
 
 import java.nio.file.Path;
 

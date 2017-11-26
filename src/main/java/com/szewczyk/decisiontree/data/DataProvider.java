@@ -1,7 +1,7 @@
-package data;
+package com.szewczyk.decisiontree.data;
 
 
-import model.ExamplesData;
+import com.szewczyk.decisiontree.model.ExamplesData;
 
 import java.nio.file.Path;
 
