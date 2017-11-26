@@ -1,10 +1,10 @@
-package utils;
+package com.szewczyk.decisiontree.utils;
 
-import logic.Algorithm;
-import logic.DecisionTree;
-import logic.DefaultExamplesUtils;
-import logic.Tree;
-import model.Examples;
+import com.szewczyk.decisiontree.logic.Algorithm;
+import com.szewczyk.decisiontree.logic.DecisionTree;
+import com.szewczyk.decisiontree.logic.DefaultExamplesUtils;
+import com.szewczyk.decisiontree.logic.Tree;
+import com.szewczyk.decisiontree.model.Examples;
 
 import java.util.Set;
 
