@@ -1,4 +1,4 @@
-package model;
+package com.szewczyk.decisiontree.model;
 
 import java.util.Map;
 import java.util.Set;
