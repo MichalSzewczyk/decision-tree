@@ -23,4 +23,8 @@ public class Example {
     public boolean getClassifier() {
         return classifier;
     }
+
+    public Map<String, String> getAttributesWithDecisions() {
+        return attributesWithDecisions;
+    }
 }

@@ -24,8 +24,6 @@ public class DecisionTree implements Tree{
     }
 
     private Attribute compileWalk(Attribute current, Map<String, String> chosenAttributes, Set<String> usedAttributes) {
-        System.out.println("creating tree for: "+current+" "+ chosenAttributes+" "+usedAttributes);
-
         if (current.isLeaf())
             return current;
 

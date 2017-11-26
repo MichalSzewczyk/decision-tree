@@ -5,5 +5,5 @@ import com.szewczyk.decisiontree.model.ExamplesData;
 
 @FunctionalInterface
 public interface DataConverter {
-    ExamplesData convertData(Data data);
+    ExamplesData convertData(int trainingExamples, int validationExamples, Data data);
 }

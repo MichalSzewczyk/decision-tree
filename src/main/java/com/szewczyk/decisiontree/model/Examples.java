@@ -9,14 +9,14 @@ public class Examples{
     }
 
     private final Set<String> attributes;
-    private final List<Example> trainingExamples;
+    private final List<Example> examples;
 
-    public Examples(Set<String> attributes, List<Example> trainingExamples) {
+    public Examples(Set<String> attributes, List<Example> examples) {
         this.attributes = attributes;
-        this.trainingExamples = trainingExamples;
+        this.examples = examples;
     }
 
-    public List<Example> getTrainingExamples() {
-        return trainingExamples;
+    public List<Example> getExamples() {
+        return examples;
     }
 }

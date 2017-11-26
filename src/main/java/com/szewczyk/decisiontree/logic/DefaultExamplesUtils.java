@@ -18,7 +18,7 @@ public class DefaultExamplesUtils {
     int countDecisions(String attribute, String decision) {
         int count = 0;
 
-        for (Example e : examples.getTrainingExamples()) {
+        for (Example e : examples.getExamples()) {
             if (e.getDecisionFor(attribute).equals(decision))
                 count++;
         }
@@ -26,10 +26,6 @@ public class DefaultExamplesUtils {
         return count;
     }
 
-    /**
-     * Returns a map from each attribute name to a set of all values used in the
-     * examples for that attribute.
-     */
     public Map<String, Set<String>> extractDecisions() {
         Map<String, Set<String>> decisions = new HashMap<String, Set<String>>();
 
@@ -59,7 +55,7 @@ public class DefaultExamplesUtils {
     }
 
     public int count(String attribute, String decision, Map<String, String> attributes) {
-        attributes = new HashMap(attributes);
+        attributes = new HashMap<>(attributes);
         attributes.put(attribute, decision);
 
         return count(attributes);
@@ -68,16 +64,12 @@ public class DefaultExamplesUtils {
     public int count(Map<String, String> attributes) {
         int count = 0;
 
-        System.out.println("chosen attributes: " + attributes);
-//        System.out.println("examples: "+examples);
-
         nextExample:
-        for (Example e : examples.getTrainingExamples()) {
+        for (Example e : examples.getExamples()) {
             for (Map.Entry<String, String> attribute : attributes.entrySet())
                 if (!(e.getDecisionFor(attribute.getKey()).equals(attribute.getValue())))
                     continue nextExample;
 
-            // All of the provided attributes match the example.
             count++;
         }
 
@@ -89,7 +81,7 @@ public class DefaultExamplesUtils {
 
 
         nextExample:
-        for (Example e : examples.getTrainingExamples()) {
+        for (Example e : examples.getExamples()) {
             for (Map.Entry<String, String> attribute : attributes.entrySet())
                 if (!(e.getDecisionFor(attribute.getKey()).equals(attribute.getValue())))
                     continue nextExample;
@@ -105,26 +97,20 @@ public class DefaultExamplesUtils {
 
     public int countClassifier(boolean classifier, String attribute,
                                String decision, Map<String, String> attributes) {
-        attributes = new HashMap(attributes);
+        attributes = new HashMap<>(attributes);
         attributes.put(attribute, decision);
 
         return countClassifier(classifier, attributes);
     }
 
-    /**
-     * Returns the number of examples.
-     */
     public int count() {
-        return examples.getTrainingExamples().size();
+        return examples.getExamples().size();
     }
 
-    /**
-     * Returns a set of attribute names used in the examples.
-     */
     public Set<String> extractAttributes() {
-        Set<String> attributes = new HashSet<String>();
+        Set<String> attributes = new HashSet<>();
 
-        for (Example e : examples.getTrainingExamples()) {
+        for (Example e : examples.getExamples()) {
             attributes.addAll(e.getAttributes());
         }
 
@@ -132,9 +118,9 @@ public class DefaultExamplesUtils {
     }
 
     private Set<String> extractDecisions(String attribute) {
-        Set<String> decisions = new HashSet<String>();
+        Set<String> decisions = new HashSet<>();
 
-        for (Example e : examples.getTrainingExamples()) {
+        for (Example e : examples.getExamples()) {
             decisions.add(e.getDecisionFor(attribute));
         }
 
