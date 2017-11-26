@@ -1,5 +1,4 @@
 ﻿*.idea
 .idea/vcs.xml
 decision-tree.iml
-src/main/resources/
 target/
