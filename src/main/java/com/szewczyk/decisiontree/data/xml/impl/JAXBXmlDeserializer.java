@@ -1,7 +1,7 @@
-package data.xml.impl;
+package com.szewczyk.decisiontree.data.xml.impl;
 
 
-import data.xml.XmlDeserializer;
+import com.szewczyk.decisiontree.data.xml.XmlDeserializer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

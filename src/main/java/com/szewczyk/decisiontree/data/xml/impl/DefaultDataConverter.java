@@ -1,11 +1,11 @@
-package data.xml.impl;
+package com.szewczyk.decisiontree.data.xml.impl;
 
-import data.model.raw.Attributes;
-import data.model.raw.Data;
-import data.xml.DataConverter;
-import model.Example;
-import model.Examples;
-import model.ExamplesData;
+import com.szewczyk.decisiontree.data.model.raw.Attributes;
+import com.szewczyk.decisiontree.data.model.raw.Data;
+import com.szewczyk.decisiontree.data.xml.DataConverter;
+import com.szewczyk.decisiontree.model.Example;
+import com.szewczyk.decisiontree.model.Examples;
+import com.szewczyk.decisiontree.model.ExamplesData;
 
 import java.util.*;
 import java.util.stream.Collectors;

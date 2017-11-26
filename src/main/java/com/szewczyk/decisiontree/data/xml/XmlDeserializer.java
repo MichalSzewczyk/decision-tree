@@ -1,4 +1,4 @@
-package data.xml;
+package com.szewczyk.decisiontree.data.xml;
 
 import java.nio.file.Path;
 import java.util.Optional;

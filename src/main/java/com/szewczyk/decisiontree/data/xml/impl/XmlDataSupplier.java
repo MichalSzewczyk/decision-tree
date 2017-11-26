@@ -1,8 +1,8 @@
-package data.xml.impl;
+package com.szewczyk.decisiontree.data.xml.impl;
 
-import data.model.raw.Data;
-import data.xml.DataSupplier;
-import data.xml.XmlDeserializer;
+import com.szewczyk.decisiontree.data.model.raw.Data;
+import com.szewczyk.decisiontree.data.xml.DataSupplier;
+import com.szewczyk.decisiontree.data.xml.XmlDeserializer;
 
 import java.nio.file.Path;
 
