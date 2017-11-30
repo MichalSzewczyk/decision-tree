@@ -56,6 +56,7 @@ public class Attribute {
 
     public void prune(double epsilon, Set<Attribute> attributes, Attribute root, Examples validationData) {
         System.out.println("Performing pruning.");
+        System.out.println("Performing verification before pruning.");
         double before = root.verifyFor(validationData);
         System.out.println("Attributes for prunning: "+attributes);
         List<Attribute> attributesWithLeafChildren = attributes.stream().filter(attribute -> attribute.decisions.getMap().values().stream().allMatch(value -> value.leaf)).collect(Collectors.toList());
@@ -65,9 +66,10 @@ public class Attribute {
             attribute.classification = getClassificationFor(attribute);
         });
 
+        System.out.println("Performing verification after pruning.");
         double after = root.verifyFor(validationData);
         System.out.println("Accuracy before pruning: " + before + " and after: " + after);
-        if (before - epsilon > after) {
+        if (before - epsilon <= after) {
             System.out.println("Rolling back pruning");
             rollbackPruning(attributesWithLeafChildren);
         }
@@ -101,7 +103,7 @@ public class Attribute {
                     }
                 }).count();
 
-        System.out.println("Successful " + numberOfSuccessful + " for all: " + verificationExamples.getExamples().size());
+        System.out.println("Verification results: \n\tSuccessful " + numberOfSuccessful + " for all: " + verificationExamples.getExamples().size());
         return (double) numberOfSuccessful / verificationExamples.getExamples().size();
     }
 
@@ -113,7 +115,6 @@ public class Attribute {
 
     public String toString() {
         StringBuffer b = new StringBuffer();
-
         for (Map.Entry<String, Attribute> e : decisions.getMap().entrySet()) {
             b.append(getName());
             b.append(" -> ");

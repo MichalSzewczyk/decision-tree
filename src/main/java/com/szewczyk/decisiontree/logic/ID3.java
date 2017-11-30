@@ -1,6 +1,4 @@
-package com.szewczyk.decisiontree.logic; /**
- *
- */
+package com.szewczyk.decisiontree.logic;
 
 import com.szewczyk.decisiontree.model.Examples;
 
@@ -18,11 +16,11 @@ public class ID3 implements Algorithm {
     }
 
     public Attribute nextAttribute(Map<String, String> chosenAttributes, Set<String> usedAttributes) {
-        double currentGain = 0.0, bestGain = 0.0;
+        double currentGain;
+        double bestGain = 0.0;
         String bestAttribute = "";
         int positive = examplesUtils.countPositive(chosenAttributes);
         int negative = examplesUtils.countNegative(chosenAttributes);
-        System.out.println("negative, positive: "+negative+" "+positive);
 
         if (positive == 0)
             return new Attribute(false);
@@ -30,7 +28,7 @@ public class ID3 implements Algorithm {
             return new Attribute(true);
 
 
-                remainingAttributes(usedAttributes).size();
+        remainingAttributes(usedAttributes).size();
 
 
         for (String attribute : remainingAttributes(usedAttributes)) {
@@ -41,7 +39,7 @@ public class ID3 implements Algorithm {
                 bestGain = currentGain;
             }
         }
-        System.out.println("best gain "+bestGain);
+        System.out.println("best gain " + bestGain);
         if (bestGain == 0.0) {
             boolean classifier = examplesUtils.countPositive(chosenAttributes) > 0;
 

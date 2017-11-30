@@ -51,7 +51,6 @@ public class DecisionTree implements Tree {
         Set<String> usedAttributes = new HashSet<>();
         if (!decisionsSpecified)
             decisions = examplesUtils.extractDecisions();
-        System.out.println("creating tree for: " + chosenAttributes + " " + usedAttributes);
 
         rootAttribute = compileWalk(algorithm.nextAttribute(chosenAttributes, usedAttributes), chosenAttributes, usedAttributes);
     }
