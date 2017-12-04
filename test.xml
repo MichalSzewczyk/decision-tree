@@ -7,98 +7,128 @@
     </attributes>
     <examples>
         <example>
-            <classifier>false</classifier>
+            <classifier>go outside</classifier>
             <value>Sunny</value>
             <value>Hot</value>
             <value>High</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>false</classifier>
+            <classifier>go outside</classifier>
             <value>Sunny</value>
             <value>Hot</value>
             <value>High</value>
             <value>Strong</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Overcast</value>
             <value>Hot</value>
             <value>High</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Rain</value>
             <value>Mild</value>
             <value>High</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Rain</value>
             <value>Cool</value>
             <value>Normal</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>false</classifier>
+            <classifier>go outside</classifier>
             <value>Rain</value>
             <value>Cool</value>
             <value>Normal</value>
             <value>Strong</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Overcast</value>
             <value>Cool</value>
             <value>Normal</value>
             <value>Strong</value>
         </example>
         <example>
-            <classifier>false</classifier>
+            <classifier>stay here</classifier>
+            <value>Sunny</value>
+            <value>Hot</value>
+            <value>High</value>
+            <value>Strong</value>
+        </example>
+
+        <example>
+            <classifier>stay here</classifier>
+            <value>Overcast</value>
+            <value>Hot</value>
+            <value>High</value>
+            <value>Strong</value>
+        </example>
+
+        <example>
+            <classifier>stay here</classifier>
+            <value>Rain</value>
+            <value>Hot</value>
+            <value>High</value>
+            <value>Strong</value>
+        </example>
+        <example>
+            <classifier>stay here</classifier>
+            <value>Rain</value>
+            <value>Cool</value>
+            <value>High</value>
+            <value>Strong</value>
+        </example>
+        <example>
+            <classifier>go outside</classifier>
             <value>Sunny</value>
             <value>Mild</value>
             <value>High</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Sunny</value>
             <value>Cool</value>
             <value>Normal</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Rain</value>
             <value>Mild</value>
             <value>Normal</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Sunny</value>
             <value>Mild</value>
             <value>Normal</value>
             <value>Strong</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Overcast</value>
             <value>Mild</value>
             <value>High</value>
             <value>Strong</value>
         </example>
         <example>
-            <classifier>true</classifier>
+            <classifier>stay inside</classifier>
             <value>Overcast</value>
             <value>Hot</value>
             <value>Normal</value>
             <value>Weak</value>
         </example>
         <example>
-            <classifier>false</classifier>
+            <classifier>go outside</classifier>
             <value>Rain</value>
             <value>Mild</value>
             <value>High</value>

@@ -129,8 +129,7 @@ public class Attribute {
             b.append(getName());
             b.append(" -> ");
             if (e.getValue().isLeaf()) {
-                System.out.println(e.getValue().getClassification());
-                b.append("classification: "+e.getValue().getClassification());
+                b.append("classification: ").append(e.getValue().getClassification());
             }else
                 b.append(e.getValue().getName());
             b.append(" [label=\"");
