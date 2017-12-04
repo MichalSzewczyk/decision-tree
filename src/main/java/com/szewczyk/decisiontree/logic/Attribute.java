@@ -54,33 +54,43 @@ public class Attribute {
         return positiveClassifiers > negativeClassifiers;
     }
 
+    List<Attribute> getAttributesWithLeafChildren(Set<Attribute> attributes) {
+        return attributes.stream().filter(attribute -> attribute.decisions.getMap().values().stream().allMatch(value -> value.leaf)).collect(Collectors.toList());
+    }
+
     public void prune(double epsilon, Set<Attribute> attributes, Attribute root, Examples validationData) {
-        System.out.println("Performing pruning.");
-        System.out.println("Performing verification before pruning.");
-        double before = root.verifyFor(validationData);
-        System.out.println("Attributes for prunning: "+attributes);
         List<Attribute> attributesWithLeafChildren = attributes.stream().filter(attribute -> attribute.decisions.getMap().values().stream().allMatch(value -> value.leaf)).collect(Collectors.toList());
 
-        attributesWithLeafChildren.forEach(attribute -> {
-            attribute.leaf = true;
-            attribute.classification = getClassificationFor(attribute);
-        });
+        while (
+                attributesWithLeafChildren
+                        .stream()
+                        .map(attribute -> tryPruning(attribute, validationData, root, epsilon))
+                        .filter(value -> value).count() > 0
+                ) {
 
-        System.out.println("Performing verification after pruning.");
-        double after = root.verifyFor(validationData);
-        System.out.println("Accuracy before pruning: " + before + " and after: " + after);
-        if (before - epsilon <= after) {
-            System.out.println("Rolling back pruning");
-            rollbackPruning(attributesWithLeafChildren);
+            attributesWithLeafChildren = getAttributesWithLeafChildren(attributes);
         }
+    }
+
+    private boolean tryPruning(Attribute attribute, Examples validationData, Attribute root, double epsilon) {
+        double before = root.verifyFor(validationData);
+        attribute.leaf = true;
+        attribute.classification = getClassificationFor(attribute);
+        double after = root.verifyFor(validationData);
+        boolean pruned = true;
+        if (before - epsilon <= after) {
+            rollbackPruning(attribute);
+            pruned = false;
+        }
+        return pruned;
     }
 
     public void prune(Set<Attribute> attributes, Attribute root, Examples validationData) {
         prune(0, attributes, root, validationData);
     }
 
-    private void rollbackPruning(List<Attribute> attributesWithLeafChildren) {
-        attributesWithLeafChildren.forEach(attribute -> attribute.leaf = false);
+    private void rollbackPruning(Attribute attribute) {
+        attribute.leaf = false;
     }
 
     public boolean apply(Map<String, String> data) throws BadDecisionException {
