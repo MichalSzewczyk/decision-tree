@@ -3,9 +3,7 @@ package com.szewczyk.decisiontree.logic;
 import com.szewczyk.decisiontree.model.Examples;
 import com.szewczyk.decisiontree.utils.BadDecisionException;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Attribute {
@@ -13,19 +11,21 @@ public class Attribute {
 
     private String attributeName;
     private Decisions decisions;
-    private boolean classification;
+    private String classification;
 
-    public Attribute(boolean classification) {
-        this.leaf = true;
+    private Attribute(boolean leaf, String attributeName, Decisions decisions, String classification) {
+        this.leaf = leaf;
+        this.attributeName = attributeName;
+        this.decisions = decisions;
         this.classification = classification;
-        this.decisions = new Decisions();
-        this.attributeName = null;
     }
 
-    public Attribute(String name) {
-        this.leaf = false;
-        this.attributeName = name;
-        this.decisions = new Decisions();
+    public static Attribute getLeafAttribute(String classification) {
+        return new Attribute(true, null, new Decisions(), classification);
+    }
+
+    public static Attribute getNonLeafAttribute(String name) {
+        return new Attribute(false, name, new Decisions(), null);
     }
 
     public String getName() {
@@ -36,22 +36,22 @@ public class Attribute {
         return leaf;
     }
 
-    public void setClassification(boolean classification) {
+    public void setClassification(String classification) {
         assert (leaf);
 
         this.classification = classification;
     }
 
-    public boolean getClassification() {
+    public String getClassification() {
         assert (leaf);
 
         return classification;
     }
 
-    boolean getClassificationFor(Attribute attribute) {
-        long positiveClassifiers = attribute.decisions.getMap().values().stream().filter(Attribute::getClassification).count();
-        long negativeClassifiers = attribute.decisions.getMap().values().size() - positiveClassifiers;
-        return positiveClassifiers > negativeClassifiers;
+    String getClassificationFor(Attribute attribute) {
+        Map<String, Long> attributesWithOccurrences = attribute.decisions.getMap().values().stream().collect(
+                Collectors.groupingBy(Attribute::getClassification, Collectors.counting()));
+        return attributesWithOccurrences.entrySet().stream().max(Comparator.comparingInt(e -> e.getValue().intValue())).orElseThrow(IllegalStateException::new).getKey();
     }
 
     List<Attribute> getAttributesWithLeafChildren(Set<Attribute> attributes) {
@@ -93,7 +93,7 @@ public class Attribute {
         attribute.leaf = false;
     }
 
-    public boolean apply(Map<String, String> data) throws BadDecisionException {
+    public String apply(Map<String, String> data) throws BadDecisionException {
         if (isLeaf())
             return getClassification();
 
@@ -106,8 +106,8 @@ public class Attribute {
                 .stream()
                 .filter(example -> {
                     try {
-                        boolean result = apply(example.getAttributesWithDecisions());
-                        return example.getClassifier() == result;
+                        String result = apply(example.getAttributesWithDecisions());
+                        return example.getClassifier().equals(result);
                     } catch (BadDecisionException e) {
                         return false;
                     }
@@ -128,9 +128,10 @@ public class Attribute {
         for (Map.Entry<String, Attribute> e : decisions.getMap().entrySet()) {
             b.append(getName());
             b.append(" -> ");
-            if (e.getValue().isLeaf())
-                b.append(e.getValue().getClassification());
-            else
+            if (e.getValue().isLeaf()) {
+                System.out.println(e.getValue().getClassification());
+                b.append("classification: "+e.getValue().getClassification());
+            }else
                 b.append(e.getValue().getName());
             b.append(" [label=\"");
             b.append(e.getKey());

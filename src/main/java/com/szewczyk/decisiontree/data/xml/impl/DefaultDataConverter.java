@@ -54,7 +54,7 @@ public class DefaultDataConverter implements DataConverter {
         for (int i = 0; i < attributes.length; i++) {
             attributesToValues.put(attributes[i], values[i]);
         }
-        return new Example(attributesToValues, Boolean.valueOf(classifier));
+        return new Example(attributesToValues, classifier);
     }
 
     private List<Example> extractExamplesFromData(Data data) {

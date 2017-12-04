@@ -3,6 +3,7 @@ package com.szewczyk.decisiontree.logic;
 import com.szewczyk.decisiontree.model.Examples;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -15,24 +16,49 @@ public class ID3 implements Algorithm {
         this.examples = examples;
     }
 
-    public Attribute nextAttribute(Map<String, String> chosenAttributes, Set<String> usedAttributes) {
+    Optional<String> allMatchesOneClassification(Set<String> classifications, Map<String, String> chosenAttributes) {
+        int i = 0;
+        String result = null;
+        for (String classification : classifications) {
+            if (examplesUtils.countPositive(classification, chosenAttributes) > 0) {
+                i++;
+                result = classification;
+            }
+            if (i == 2) {
+                return Optional.empty();
+            }
+        }
+        return Optional.ofNullable(result);
+    }
+
+    Optional<String> getWithHighestMatch(Set<String> classifications, Map<String, String> chosenAttributes) {
+        int max = Integer.MIN_VALUE;
+        String result = null;
+        for (String classification : classifications) {
+            int actual = examplesUtils.countPositive(classification, chosenAttributes);
+            if (actual > max) {
+                max = actual;
+                result = classification;
+            }
+        }
+        return Optional.ofNullable(result);
+    }
+
+    public Attribute nextAttribute(Set<String> classifications, Map<String, String> chosenAttributes, Set<String> usedAttributes) {
         double currentGain;
         double bestGain = 0.0;
         String bestAttribute = "";
-        int positive = examplesUtils.countPositive(chosenAttributes);
-        int negative = examplesUtils.countNegative(chosenAttributes);
+        Optional<String> result = allMatchesOneClassification(classifications, chosenAttributes);
 
-        if (positive == 0)
-            return new Attribute(false);
-        else if (negative == 0)
-            return new Attribute(true);
-
+        if (result.isPresent()) {
+            return Attribute.getLeafAttribute(result.get());
+        }
 
         remainingAttributes(usedAttributes).size();
 
 
         for (String attribute : remainingAttributes(usedAttributes)) {
-            currentGain = informationGain(attribute, chosenAttributes);
+            currentGain = informationGain(classifications, attribute, chosenAttributes);
 
             if (currentGain > bestGain) {
                 bestAttribute = attribute;
@@ -41,12 +67,12 @@ public class ID3 implements Algorithm {
         }
         System.out.println("best gain " + bestGain);
         if (bestGain == 0.0) {
-            boolean classifier = examplesUtils.countPositive(chosenAttributes) > 0;
+            String classifier = getWithHighestMatch(classifications, chosenAttributes).orElseThrow(IllegalStateException::new);
 
-            return new Attribute(classifier);
+            return Attribute.getLeafAttribute(classifier);
         } else {
 
-            return new Attribute(bestAttribute);
+            return Attribute.getNonLeafAttribute(bestAttribute);
         }
     }
 
@@ -56,26 +82,31 @@ public class ID3 implements Algorithm {
         return result;
     }
 
-    private double entropy(Map<String, String> specifiedAttributes) {
+    private double entropy(Set<String> classifiers, Map<String, String> specifiedAttributes) {
         double totalExamples = examplesUtils.count();
-        double positiveExamples = examplesUtils.countPositive(specifiedAttributes);
-        double negativeExamples = examplesUtils.countNegative(specifiedAttributes);
+        double entropy = 0;
+        for (String classifier : classifiers) {
+            double examplesMatchingClassifier = examplesUtils.countPositive(classifier, specifiedAttributes);
+            entropy += -nlog2(examplesMatchingClassifier / totalExamples);
+        }
 
-        return -nlog2(positiveExamples / totalExamples) -
-                nlog2(negativeExamples / totalExamples);
+        return entropy;
     }
 
-    private double entropy(String attribute, String decision, Map<String, String> specifiedAttributes) {
+    private double entropy(Set<String> classifiers, String attribute, String decision, Map<String, String> specifiedAttributes) {
         double totalExamples = examplesUtils.count(attribute, decision, specifiedAttributes);
-        double positiveExamples = examplesUtils.countPositive(attribute, decision, specifiedAttributes);
-        double negativeExamples = examplesUtils.countNegative(attribute, decision, specifiedAttributes);
 
-        return -nlog2(positiveExamples / totalExamples) -
-                nlog2(negativeExamples / totalExamples);
+        double entropy = 0;
+        for (String classifier : classifiers) {
+            double examplesMatchingClassifier = examplesUtils.countPositive(classifier, attribute, decision, specifiedAttributes);
+            entropy += -nlog2(examplesMatchingClassifier / totalExamples);
+        }
+
+        return entropy;
     }
 
-    private double informationGain(String attribute, Map<String, String> specifiedAttributes) {
-        double sum = entropy(specifiedAttributes);
+    private double informationGain(Set<String> classifiers, String attribute, Map<String, String> specifiedAttributes) {
+        double sum = entropy(classifiers, specifiedAttributes);
 
         double examplesCount = examplesUtils.count(specifiedAttributes);
 
@@ -85,7 +116,7 @@ public class ID3 implements Algorithm {
         Map<String, Set<String>> decisions = examplesUtils.extractDecisions();
 
         for (String decision : decisions.get(attribute)) {
-            double entropyPart = entropy(attribute, decision, specifiedAttributes);
+            double entropyPart = entropy(classifiers, attribute, decision, specifiedAttributes);
             double decisionCount = examplesUtils.countDecisions(attribute, decision);
 
             sum += -(decisionCount / examplesCount) * entropyPart;

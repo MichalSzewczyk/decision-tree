@@ -36,22 +36,22 @@ public class DefaultExamplesUtils {
         return decisions;
     }
 
-    public int countNegative(String attribute, String decision,
+    public int countNegative(String classifier, String attribute, String decision,
                              Map<String, String> attributes) {
-        return countClassifier(false, attribute, decision, attributes);
+        return countClassifier(classifier, attribute, decision, attributes);
     }
 
-    public int countPositive(String attribute, String decision,
+    public int countPositive(String classifier, String attribute, String decision,
                              Map<String, String> attributes) {
-        return countClassifier(true, attribute, decision, attributes);
+        return countClassifier(classifier, attribute, decision, attributes);
     }
 
-    public int countNegative(Map<String, String> attributes) {
-        return countClassifier(false, attributes);
+    public int countNegative(String classifier, Map<String, String> attributes) {
+        return countClassifier(classifier, attributes);
     }
 
-    public int countPositive(Map<String, String> attributes) {
-        return countClassifier(true, attributes);
+    public int countPositive(String classifier, Map<String, String> attributes) {
+        return countClassifier(classifier, attributes);
     }
 
     public int count(String attribute, String decision, Map<String, String> attributes) {
@@ -76,7 +76,7 @@ public class DefaultExamplesUtils {
         return count;
     }
 
-    public int countClassifier(boolean classifier, Map<String, String> attributes) {
+    public int countClassifier(String classifier, Map<String, String> attributes) {
         int count = 0;
 
 
@@ -85,14 +85,14 @@ public class DefaultExamplesUtils {
             for (Map.Entry<String, String> attribute : attributes.entrySet())
                 if (!(e.getDecisionFor(attribute.getKey()).equals(attribute.getValue())))
                     continue nextExample;
-            if (e.getClassifier() == classifier)
+            if (e.getClassifier().equals(classifier))
                 count++;
         }
 
         return count;
     }
 
-    public int countClassifier(boolean classifier, String attribute,
+    public int countClassifier(String classifier, String attribute,
                                String decision, Map<String, String> attributes) {
         attributes = new HashMap<>(attributes);
         attributes.put(attribute, decision);

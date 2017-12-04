@@ -4,5 +4,5 @@ import java.util.Set;
 
 
 public interface Algorithm {
-  Attribute nextAttribute(Map<String, String> chosenAttributes, Set<String> usedAttributes);
+  Attribute nextAttribute(Set<String> classifications, Map<String, String> chosenAttributes, Set<String> usedAttributes);
 }

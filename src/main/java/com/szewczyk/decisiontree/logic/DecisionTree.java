@@ -2,9 +2,13 @@ package com.szewczyk.decisiontree.logic; /**
  *
  */
 
+import com.szewczyk.decisiontree.model.Example;
 import com.szewczyk.decisiontree.model.Examples;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class DecisionTree implements Tree {
     private Examples examples;
@@ -13,6 +17,7 @@ public class DecisionTree implements Tree {
     private Attribute rootAttribute;
     private final Set<Attribute> attributes;
     private DefaultExamplesUtils examplesUtils;
+    private Set<String> classifications;
 
     private Algorithm algorithm;
 
@@ -23,9 +28,13 @@ public class DecisionTree implements Tree {
         this.decisions = new HashMap<>();
         this.decisionsSpecified = false;
         this.attributes = new HashSet<>();
+        this.classifications = new HashSet<>();
+        for(Example e : examples.getExamples()){
+            this.classifications.add(e.getClassifier());
+        }
     }
 
-    private Attribute compileWalk(Attribute current, Map<String, String> chosenAttributes, Set<String> usedAttributes) {
+    private Attribute compileWalk(Set<String> classifications, Attribute current, Map<String, String> chosenAttributes, Set<String> usedAttributes) {
         if (current.isLeaf())
             return current;
 
@@ -37,7 +46,7 @@ public class DecisionTree implements Tree {
         for (String decisionName : decisions.get(attributeName)) {
             chosenAttributes.put(attributeName, decisionName);
 
-            current.addDecision(decisionName, compileWalk(algorithm.nextAttribute(chosenAttributes, usedAttributes), chosenAttributes, usedAttributes));
+            current.addDecision(decisionName, compileWalk(classifications, algorithm.nextAttribute(classifications, chosenAttributes, usedAttributes), chosenAttributes, usedAttributes));
         }
 
         chosenAttributes.remove(attributeName);
@@ -52,7 +61,7 @@ public class DecisionTree implements Tree {
         if (!decisionsSpecified)
             decisions = examplesUtils.extractDecisions();
 
-        rootAttribute = compileWalk(algorithm.nextAttribute(chosenAttributes, usedAttributes), chosenAttributes, usedAttributes);
+        rootAttribute = compileWalk(classifications, algorithm.nextAttribute(classifications, chosenAttributes, usedAttributes), chosenAttributes, usedAttributes);
     }
 
     public String toString() {
